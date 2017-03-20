@@ -15,5 +15,9 @@ public class PageFrame {
 	public int getId() {
 		return id;
 	}
+
+	public void setPage(Page p) {
+		currPage = p;	
+	}
 	
 }

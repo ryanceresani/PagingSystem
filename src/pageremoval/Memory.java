@@ -3,13 +3,15 @@ package pageremoval;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Memory {
 	ArrayList<PageFrame> frames;
-	HashMap<Integer, PageFrame> freeFrames;
+	TreeMap<Integer, PageFrame> freeFrames;
 	int cacheHits;
 	int cacheMisses;
 	ArrayDeque<Page> firstIn;
+	
 
 	public Memory(int numFrames){
 		frames = new ArrayList<PageFrame>();
@@ -28,8 +30,9 @@ public class Memory {
 		else{
 			cacheMisses++;
 			if(freeFrames.isEmpty()){
-
-			}
+				p.setAssigned(true);
+				freeFrames.pollFirstEntry().getValue().setPage(p);
+			}		
 		}
 	}
 }

@@ -18,6 +18,9 @@ public class Page {
 		return id;
 	}
 
+	public void setAssigned(boolean a) {
+		isAssigned = a;
+	}
 	@Override
 	public String toString() {
 		return "Page " + id;
