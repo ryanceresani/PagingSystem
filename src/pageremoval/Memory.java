@@ -1,20 +1,35 @@
 package pageremoval;
 
-import java.util.HashSet;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Memory {
-	HashSet<PageFrame> frames;
+	ArrayList<PageFrame> frames;
+	HashMap<Integer, PageFrame> freeFrames;
 	int cacheHits;
 	int cacheMisses;
-	Page firstIn;
-	
-	public Memory(){
-		
-	}
+	ArrayDeque<Page> firstIn;
+
 	public Memory(int numFrames){
-		frames = new HashSet<PageFrame>(numFrames);
-	
+		frames = new ArrayList<PageFrame>();
+		ArrayDeque<Page> firstIn = new ArrayDeque<Page>();
+		for (int i = 0; i < numFrames; i++) {
+			PageFrame newFrame = new PageFrame();
+			frames.add(newFrame);
+			freeFrames.put(newFrame.getId(), newFrame);
+		}
 	}
-	
-	
+
+	public void pageRequest(Page p){
+		if(p.isAssigned){
+			cacheHits++;
+		}
+		else{
+			cacheMisses++;
+			if(freeFrames.isEmpty()){
+
+			}
+		}
+	}
 }
