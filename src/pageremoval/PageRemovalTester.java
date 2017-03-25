@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import resources.ConfigParser;
+import config.ConfigParser;
 
 public class PageRemovalTester {
 	
