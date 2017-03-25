@@ -2,73 +2,54 @@ package pageremoval;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Stack;
-import java.util.TreeMap;
+import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
-import pageremoval.PageRemovalTester.Pd;
-
 public class PageGen {
-	
-	final static int SOLO_WEIGHT = 4;
-	final static int FIRST_WEIGHT = 4;
-	final static int SECOND_WEIGHT = 2;
-	final static int THIRD_WEIGHT = 3;
-	
-	static Stack<Integer> multiWeights = new Stack<Integer>();
-	
-	public static ArrayDeque<Page> createRandomPageSequence(int numOfRequests, Pd pd, ArrayList<Page> pages) {
-		multiWeights.push(THIRD_WEIGHT);
-		multiWeights.push(SECOND_WEIGHT);
-		multiWeights.push(FIRST_WEIGHT);
-		
+	//Constants representing the name of config file keys
+	//Used for polling the config file for the simulation
+	final static String NUM_OF_PAGES = "differentpages";
+	final static String PAGE_FRAMES = "pageframes";
+	final static String PAGE_REQUESTS = "pagerequests";
+	final static String DISTRIBUTION = "distribution";
+	final static String MULTIWEIGHT = "multiweight";
+	final static String WEIGHT_BIAS = "weightbias";
+	final static String CLUSTERED = "clustered";	
+
+	public static ArrayDeque<Page> createRandomPageSequence(Properties props, ArrayList<Page> pages) {
+
 		ArrayDeque<Page> pageRequest = new ArrayDeque<Page>();
+		int pageRequests = (int) props.get(PAGE_REQUESTS);
+		int numPages = (int) props.get(NUM_OF_PAGES);
 		int randomNumber;
-		
-		
-		if (pd.equals(Pd.TOTAL_RANDOM)){
-			for (int i = 0; i < numOfRequests; i++) {
-				randomNumber = ThreadLocalRandom.current().nextInt(0, PageRemovalTester.NUM_OF_PAGES);
+
+
+		if((int) props.get(DISTRIBUTION) == 1) {
+			for (int i = 0; i < (int) props.get(PAGE_REQUESTS); i++) {
+				randomNumber = ThreadLocalRandom.current().nextInt(0, numPages);
 				pageRequest.offer(pages.get(randomNumber));
 			}
 			return pageRequest;
 		}
-
-		TreeMap<Integer, Page> weights = new TreeMap<Integer, Page>();
-		int sumOfWeights = 0;
-		
-		if(pd.equals(Pd.SOLO_WEIGHTED)){
-			weights.put(SOLO_WEIGHT, pages.get(0));
-			sumOfWeights += SOLO_WEIGHT;
-			for (Page p : pages.subList(1, pages.size())) {
-				weights.put(sumOfWeights, p);
+		else{
+			int multiWeight = (int) props.get(MULTIWEIGHT);
+			int weightBias = (int) props.get(WEIGHT_BIAS);
+			int std = Math.max(1, multiWeight-weightBias);
+			
+			for (int i = 0; i < pageRequests; i++) {
+				do{
+					randomNumber = (int) ThreadLocalRandom.current().nextGaussian() * std; 
+				} while(randomNumber > 0 && randomNumber <= pageRequests);
+				pageRequest.offer(pages.get(randomNumber));
 			}
-		}		
-		
-		else if(pd.equals(Pd.MULTI_WEIGHTED)){
-			for (Page p : pages) {
-				if(!multiWeights.isEmpty()){
-					sumOfWeights += multiWeights.pop();
-					weights.put(sumOfWeights, p);
-				}
-				else{
-					weights.put(sumOfWeights, p);
-					sumOfWeights++;
-				}
-			}
-		}
-		
-		for (int i = 0; i < numOfRequests; i++) {
-			randomNumber = ThreadLocalRandom.current().nextInt(1, sumOfWeights);
-			Page req = weights.ceilingEntry(randomNumber).getValue();
-			pageRequest.offer(req);
 		}
 		
 		return pageRequest;
 	}
 
-	public static ArrayList<Page> genPages(int numOfPages) {
+	public static ArrayList<Page> genPages(Properties prop) {
 		ArrayList<Page> pages = new ArrayList<Page>();
+		int numOfPages = (int) prop.get(NUM_OF_PAGES);
 		for (int i = 0; i < numOfPages; i++) {
 			pages.add(new Page());
 		}

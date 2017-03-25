@@ -1,15 +1,14 @@
 package pageremoval;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Properties;
+
+import resources.ConfigParser;
 
 public class PageRemovalTester {
-
-	final static int NUM_OF_PAGE_REQUESTS = 25;
-	final static int NUM_OF_PAGES = 10;
-	//If random request generator creates cluster of 
-	final static boolean CLUSTERED = false;
-
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) throws IOException {
 		//Create Memory Stack
 		/*
 		 * INPUT 
@@ -19,20 +18,14 @@ public class PageRemovalTester {
 		 * distribution
 		 * clustering
 		 */
-		
-		ArrayList<Page> pages = PageGen.genPages(NUM_OF_PAGES);
+		ConfigParser cf = new ConfigParser();
+		Properties prop = cf.getPropValues();
+	
+		ArrayList<Page> pages = PageGen.genPages(prop);
 		Memory memory = new Memory(5);
 		//int pageRequest[] = createRandomPageSequence(NUM_OF_PAGE_REQUESTS, Pd.TOTAL_RANDOM, CLUSTERED);
-		ArrayDeque<Page> pageRequests = PageGen.createRandomPageSequence(NUM_OF_PAGE_REQUESTS, Pd.MULTI_WEIGHTED, pages);
-	}
-
-	//For generating different sets of page requests
-	public enum Pd {
-		//Every number has equal chance of appearing in sequence
-		TOTAL_RANDOM,
-		//A single job has a greater chance of occurring
-		SOLO_WEIGHTED, 
-		//2 or 3 jobs are requested more frequently
-		MULTI_WEIGHTED
+		ArrayDeque<Page> pageRequests = PageGen.createRandomPageSequence(prop, pages);
+		
+		System.out.println(pageRequests.toString());
 	}
 }
