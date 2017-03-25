@@ -2,7 +2,6 @@ package pageremoval;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
 import config.ConfigParser;

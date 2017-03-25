@@ -1,31 +1,51 @@
 package pageremoval;
 
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+public class Memory extends LinkedHashMap<Integer, Page> {
 
-public class Memory {
-	ArrayList<PageFrame> frames;
-	Stack<PageFrame> freeFrames;
-	HashMap<Page, PageFrame> assignments;
-	protected int cacheHits;
-	protected int cacheMisses;
-
+	private static final long serialVersionUID = 4516181972475108065L;
 	
+	private int numFrames;
+	private long requestCount = 0;
+	private long cacheHits = 0;
 
-	public Memory(int numFrames){
-		frames = new ArrayList<PageFrame>();
-		assignments = new HashMap<Page, PageFrame>();
-		for (int i = 0; i < numFrames; i++) {
-			PageFrame newFrame = new PageFrame();
-			frames.add(newFrame);
-			freeFrames.add(newFrame);
-		}
+	public Memory(int numFrames) {
+		this(numFrames, false);
 	}
 	
-	public int getCacheHits() { return cacheHits; }
+	public Memory(int numFrames, boolean lru) {
+		super(numFrames+1, 1.0f, lru);
+		this.numFrames = numFrames;
+	}
 	
-	public int getCacheMisses() { return cacheMisses;	}
+	public void pageRequest(Page p){
+		requestCount++;
+		boolean hit = false;
+		if(containsKey(p.getId())){
+			cacheHits++;
+			hit = true;
+		}
+		put(p.getId(), p);
+		
+	}
+
+	protected boolean removeEldestEntry(Entry<Integer, Page> entry) {
+		return (size() > this.numFrames);
+	} 
+
+	public long getCacheHits() { return cacheHits; } 
 	
+	public long getRequestCount() { return requestCount; }
+	
+	
+	public void printFrames(){
+		long showRequests = Math.min(requestCount, 10);
+		StringBuilder requestFormat = new StringBuilder("| %5s | %2s");
+		System.out.format("+-------+");
+		System.out.format("|       |");
+		System.out.format("+-------+");
+	}
 }
+

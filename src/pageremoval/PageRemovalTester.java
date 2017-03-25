@@ -23,10 +23,11 @@ public class PageRemovalTester {
 		//int pageRequest[] = createRandomPageSequence(NUM_OF_PAGE_REQUESTS, Pd.TOTAL_RANDOM, CLUSTERED);
 		ArrayDeque<Page> pageRequests = PageGen.createRandomPageSequence(cf, pages);
 
-		LRUMemory lru = new LRUMemory(cf.get(CV.PAGE_FRAMES.getProperty()));
-		FIFOMemory fifo = new FIFOMemory(cf.get(CV.PAGE_FRAMES.getProperty()));
+		Memory lru = new Memory(cf.get(CV.PAGE_FRAMES.getProperty()), true);
+		Memory fifo = new Memory(cf.get(CV.PAGE_FRAMES.getProperty()));
 		System.out.println(pageRequests.toString());
 
+		
 		while(!pageRequests.isEmpty()){
 			Page nextPage = pageRequests.poll();
 			lru.pageRequest(nextPage);
@@ -37,6 +38,8 @@ public class PageRemovalTester {
 
 		System.out.println(fifo.getCacheHits());
 		System.out.println(lru.getCacheHits());
+		
+		
 	}
 
 	public enum CV{

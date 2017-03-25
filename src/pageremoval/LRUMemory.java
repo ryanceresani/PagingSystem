@@ -21,7 +21,7 @@ public class LRUMemory extends LinkedHashMap<Integer, Page> {
 		put(p.getId(), p);
 	}
 
-	protected boolean removeEldestEntry(Entry entry) {
+	protected boolean removeEldestEntry(Entry<Integer, Page> entry) {
 		return (size() > this.numFrames);
 	} 
 	
