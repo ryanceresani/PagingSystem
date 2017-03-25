@@ -6,17 +6,17 @@ import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
 import config.ConfigParser;
+import pageremoval.PageRemovalTester.CV;
 
 public class PageGen {
 	//Constants representing the name of config file keys
 	//Used for polling the config file for the simulation
-	final static String NUM_OF_PAGES = "differentpages";
-	final static String PAGE_FRAMES = "pageframes";
-	final static String PAGE_REQUESTS = "pagerequests";
-	final static String DISTRIBUTION = "distribution";
-	final static String MULTIWEIGHT = "multiweight";
-	final static String WEIGHT_BIAS = "weightbias";
-	final static String CLUSTERED = "clustered";	
+	static String NUM_OF_PAGES = CV.NUM_OF_PAGES.getProperty();
+	static String PAGE_FRAMES = CV.PAGE_FRAMES.getProperty();
+	static String PAGE_REQUESTS = CV.PAGE_REQUESTS.getProperty();
+	static String DISTRIBUTION = CV.DISTRIBUTION.getProperty();
+	static String MULTIWEIGHT = CV.MULTIWEIGHT.getProperty();
+	static String WEIGHT_BIAS = CV.WEIGHT_BIAS.getProperty();	
 
 	public static ArrayDeque<Page> createRandomPageSequence(ConfigParser props, ArrayList<Page> pages) {
 

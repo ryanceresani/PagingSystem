@@ -14,7 +14,11 @@ public class ConfigParser extends Properties {
 	private static final long serialVersionUID = -4819161035935624884L;
 	String result = "";
 	InputStream inputStream;
-
+	
+	public ConfigParser() throws IOException{
+		getPropValues();
+		
+	}
 	public void getPropValues() throws IOException {	
 		try {
 			String propFileName = "config.properties";
@@ -37,5 +41,5 @@ public class ConfigParser extends Properties {
 	public int get (String key){
 		return Integer.parseInt(this.getProperty(key));
 	}
-
+	
 }
