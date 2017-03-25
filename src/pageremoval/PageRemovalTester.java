@@ -2,8 +2,6 @@ package pageremoval;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Properties;
-
 import config.ConfigParser;
 
 public class PageRemovalTester {
@@ -17,15 +15,14 @@ public class PageRemovalTester {
 		 * num of page requests
 		 * distribution
 		 * clustering
-		 */
+		 */	
 		ConfigParser cf = new ConfigParser();
-		Properties prop = cf.getPropValues();
+		cf.getPropValues();
 	
-		ArrayList<Page> pages = PageGen.genPages(prop);
-		Memory memory = new Memory(5);
+		ArrayList<Page> pages = PageGen.genPages(cf);
+		//Memory memory = new Memory(5);
 		//int pageRequest[] = createRandomPageSequence(NUM_OF_PAGE_REQUESTS, Pd.TOTAL_RANDOM, CLUSTERED);
-		ArrayDeque<Page> pageRequests = PageGen.createRandomPageSequence(prop, pages);
+		ArrayDeque<Page> pageRequests = PageGen.createRandomPageSequence(cf, pages);
 		
-		System.out.println(pageRequests.toString());
 	}
 }
