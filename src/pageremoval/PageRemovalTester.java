@@ -19,11 +19,24 @@ public class PageRemovalTester {
 		ConfigParser cf = new ConfigParser();
 
 		ArrayList<Page> pages = PageGen.genPages(cf);
-		Memory memory = new Memory(cf.get(CV.PAGE_FRAMES.getProperty()));
+		//Memory memory = new Memory(cf.get(CV.PAGE_FRAMES.getProperty()));
 		//int pageRequest[] = createRandomPageSequence(NUM_OF_PAGE_REQUESTS, Pd.TOTAL_RANDOM, CLUSTERED);
 		ArrayDeque<Page> pageRequests = PageGen.createRandomPageSequence(cf, pages);
 
+		LRUMemory lru = new LRUMemory(cf.get(CV.PAGE_FRAMES.getProperty()));
+		FIFOMemory fifo = new FIFOMemory(cf.get(CV.PAGE_FRAMES.getProperty()));
+		System.out.println(pageRequests.toString());
 
+		while(!pageRequests.isEmpty()){
+			Page nextPage = pageRequests.poll();
+			lru.pageRequest(nextPage);
+			fifo.pageRequest(nextPage);
+			System.out.println("LRU: " + lru.toString());
+			System.out.println("FIFO: " + fifo.toString());
+		}
+
+		System.out.println(fifo.getCacheHits());
+		System.out.println(lru.getCacheHits());
 	}
 
 	public enum CV{

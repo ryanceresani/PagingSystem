@@ -1,38 +1,31 @@
 package pageremoval;
 
-import java.util.ArrayDeque;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.Stack;
 
 public class Memory {
 	ArrayList<PageFrame> frames;
-	TreeMap<Integer, PageFrame> freeFrames;
-	int cacheHits;
-	int cacheMisses;
-	ArrayDeque<Page> firstIn;
+	Stack<PageFrame> freeFrames;
+	HashMap<Page, PageFrame> assignments;
+	protected int cacheHits;
+	protected int cacheMisses;
+
 	
 
 	public Memory(int numFrames){
 		frames = new ArrayList<PageFrame>();
-		ArrayDeque<Page> firstIn = new ArrayDeque<Page>();
+		assignments = new HashMap<Page, PageFrame>();
 		for (int i = 0; i < numFrames; i++) {
 			PageFrame newFrame = new PageFrame();
 			frames.add(newFrame);
-			freeFrames.put(newFrame.getId(), newFrame);
+			freeFrames.add(newFrame);
 		}
 	}
-
-	public void pageRequest(Page p){
-		if(p.isAssigned){
-			cacheHits++;
-		}
-		else{
-			cacheMisses++;
-			if(freeFrames.isEmpty()){
-				p.setAssigned(true);
-				freeFrames.pollFirstEntry().getValue().setPage(p);
-			}		
-		}
-	}
+	
+	public int getCacheHits() { return cacheHits; }
+	
+	public int getCacheMisses() { return cacheMisses;	}
+	
 }
