@@ -34,7 +34,7 @@ public class PageGen {
 		}
 		else{
 			int multiWeight = props.get(MULTIWEIGHT);
-			int weightBias =  props.get(WEIGHT_BIAS) * (numPages/10);
+			int weightBias =  Math.min(numPages, props.get(WEIGHT_BIAS) * (numPages/10));
 			int std = (numPages - weightBias) + multiWeight;
 			
 			for (int i = 0; i < pageRequests; i++) {
