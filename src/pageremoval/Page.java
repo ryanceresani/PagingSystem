@@ -21,8 +21,19 @@ public class Page {
 	public void setAssigned(boolean a) {
 		isAssigned = a;
 	}
-	@Override
-	public String toString() {
+	
+	public void printPage() {
+		String format = new String("| %7s | %2s");
+		System.out.format(format, "Page " + id, "");
+	}
+	
+	public String toString(){
 		return "Page " + id;
+	}
+
+	public static void printEmptyPage() {
+		String format = new String("| %7s | %2s");
+		System.out.format(format, "", "");
+		
 	}
 }

@@ -25,7 +25,7 @@ public class PageGen {
 		int randomNumber;
 
 
-		if((int) props.get(DISTRIBUTION) == 1) {
+		if(props.get(DISTRIBUTION) == 1) {
 			for (int i = 0; i < props.get(PAGE_REQUESTS); i++) {
 				randomNumber = ThreadLocalRandom.current().nextInt(0, numPages);
 				pageRequest.offer(pages.get(randomNumber));
@@ -34,7 +34,7 @@ public class PageGen {
 		}
 		else{
 			int multiWeight = props.get(MULTIWEIGHT);
-			int weightBias =  props.get(WEIGHT_BIAS);
+			int weightBias =  props.get(WEIGHT_BIAS) * (numPages/10);
 			int std = (numPages - weightBias) + multiWeight;
 			
 			for (int i = 0; i < pageRequests; i++) {
@@ -48,6 +48,7 @@ public class PageGen {
 		return pageRequest;
 	}
 
+	
 	public static ArrayList<Page> genPages(ConfigParser prop) {
 		ArrayList<Page> pages = new ArrayList<Page>();
 		int numOfPages = prop.get(NUM_OF_PAGES);
