@@ -7,6 +7,11 @@ import java.util.concurrent.ThreadLocalRandom;
 import config.ConfigParser;
 import pageremoval.PageRemovalTester.CV;
 
+/**
+ * @author ceresanr
+ * Generates a random sequence of pages based on the configuration file.
+ * 
+ */
 public class PageGen {
 	//Constants representing the name of config file keys
 	//Used for polling the config file for the simulation
@@ -24,7 +29,7 @@ public class PageGen {
 		int numPages =  props.get(NUM_OF_PAGES);
 		int randomNumber;
 
-
+		//Fully random sequence
 		if(props.get(DISTRIBUTION) == 1) {
 			for (int i = 0; i < props.get(PAGE_REQUESTS); i++) {
 				randomNumber = ThreadLocalRandom.current().nextInt(0, numPages);
@@ -32,6 +37,7 @@ public class PageGen {
 			}
 			return pageRequest;
 		}
+		//Gaussian distribution of pages with higher weight reducing the STD
 		else{
 			int multiWeight = props.get(MULTIWEIGHT);
 			int weightBias =  Math.min(numPages, props.get(WEIGHT_BIAS) * (numPages/10));
@@ -49,6 +55,10 @@ public class PageGen {
 	}
 
 	
+	/**
+	 * @param Properties parsed from configuration file
+	 * @return ArrayList of all possible individual pages
+	 */
 	public static ArrayList<Page> genPages(ConfigParser prop) {
 		ArrayList<Page> pages = new ArrayList<Page>();
 		int numOfPages = prop.get(NUM_OF_PAGES);

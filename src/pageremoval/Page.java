@@ -2,6 +2,10 @@ package pageremoval;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author ceresanr
+ * Framework page class that can be processed by a memory manager
+ */
 public class Page {
 	int timesUsed;
 	private int id;

@@ -2,11 +2,17 @@ package pageremoval;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+/**
+ * @author ceresanr
+ * Memory class that is initialized as a LinkedHashMap
+ * LinkedHashMap is a hashmap backed by a double-linked list
+ * It is sorted based on the page removal algorithm
+ * 
+ */
 public class Memory extends LinkedHashMap<Integer, Page> {
 
 	private static final long serialVersionUID = 4516181972475108065L;
@@ -26,6 +32,11 @@ public class Memory extends LinkedHashMap<Integer, Page> {
 		timeline = new ArrayList<Object[]>();
 	}
 	
+	/**
+	 * A page is requested from the cache/memory
+	 * @param a Page object
+	 * 
+	 **/
 	public void pageRequest(Page p){
 		requestCount++;
 		if(containsKey(p.getId())){
@@ -35,6 +46,9 @@ public class Memory extends LinkedHashMap<Integer, Page> {
 		timeline.add(this.values().toArray());
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.LinkedHashMap#removeEldestEntry(java.util.Map.Entry)
+	 */
 	protected boolean removeEldestEntry(Entry<Integer, Page> entry) {
 		return (size() > this.numFrames);
 	} 
@@ -48,7 +62,6 @@ public class Memory extends LinkedHashMap<Integer, Page> {
 	public void printStatistics() {
 		NumberFormat percent = NumberFormat.getPercentInstance();
 		double successRate = (double) cacheHits/requestCount;
-		double failRate = 1 - successRate;
 		System.out.println("Cache Hits: " + cacheHits);
 		System.out.println("Cache Misses: " + (requestCount - cacheHits));
 		System.out.println("Success Rate: " + percent.format(successRate) + "\n");

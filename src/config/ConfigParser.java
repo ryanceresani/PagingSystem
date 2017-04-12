@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * @author ceresanr
+ *
+ * Configuration parser class to read from a config file
+ */
 public class ConfigParser extends Properties {
 
 	/**
@@ -19,6 +24,11 @@ public class ConfigParser extends Properties {
 		getPropValues();
 		
 	}
+	
+	/**
+	 * Reads property values from the config.properties file
+	 * @throws IOException
+	 */
 	public void getPropValues() throws IOException {	
 		try {
 			String propFileName = "config.properties";
